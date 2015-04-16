@@ -1241,9 +1241,6 @@ void AstToText::appendExpr(const char* name)
   else if (strncmp(name, "_singlevar",        8) == 0)
     appendSpecialExpr(name, "_singlevar",  "single");
 
-  else if (strncmp(name, "_domain",           8) == 0)
-    appendSpecialExpr(name, "_domain",  "domain");
-
   // Unwrap _ref(foo())
   else if (strncmp(name, "_ref(",             5) == 0)
   {
