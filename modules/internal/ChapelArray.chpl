@@ -676,8 +676,8 @@ module ChapelArray {
   pragma "has runtime type"
   pragma "ignore noinit"
   record domain {
-    var _value;     // stores domain class, may be privatized
-    var _valueType; // stores type of privatized domains
+    var _value: BaseDom;     // stores domain class, may be privatized
+    var _valueType: BaseDom; // stores type of privatized domains
     var _promotionType: index(rank, _value.idxType);
   
     inline proc _value {
@@ -688,16 +688,17 @@ module ChapelArray {
       }
     }
 
-    /*
-    pragma "generic constructor wrapper"
+    proc domain(param rank: int, type idxType = int, param stridable: bool = false) {
+      this.domain(defaultDist, rank, idxType, stridable);
+    }
+
     proc domain(d: _distribution, param rank: int, type idxType = int, param stridable: bool = false) {
       var value = d.newRectangularDom(rank, idxType, stridable);
       if _isPrivatized(value) then
-        domain(_newPrivatizedClass(value), value);
+        this.domain(_newPrivatizedClass(value), value);
       else
-        domain(value, value);
+        this.domain(value, value);
     }
-    */
 
     proc ~domain () {
      if !noRefCount {

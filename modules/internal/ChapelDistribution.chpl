@@ -34,7 +34,7 @@ module ChapelDistribution {
     var _distCnt: atomic_refcnt; // distribution reference count
     var _doms: list(BaseDom);   // domains declared over this domain
     var _domsLock: atomicflag;  //   and lock for concurrent access
-  
+
     pragma "dont disable remote value forwarding"
     proc destroyDist(): int {
       compilerAssert(!noRefCount);
@@ -122,6 +122,8 @@ module ChapelDistribution {
     var _domCnt: atomic_refcnt; // domain reference count
     var _arrs: list(BaseArr);  // arrays declared over this domain
     var _arrsLock: atomicflag; //   and lock for concurrent access
+
+    type idxType = int;
   
     proc dsiMyDist(): BaseDist {
       halt("internal error: dsiMyDist is not implemented");
