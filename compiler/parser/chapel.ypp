@@ -269,7 +269,7 @@
 //
 %token TALIGN TATOMIC TBEGIN TBREAK TBY
 %token TCLASS TCOBEGIN TCOFORALL TCONFIG TCONST TCONTINUE
-%token TDELETE TDMAPPED TDO TDOMAIN TELSE TENUM TEXPORT TEXTERN
+%token TDELETE TDMAPPED TDO TELSE TENUM TEXPORT TEXTERN
 %token TFOR TFORALL TIF TIN TINDEX TINLINE TINOUT TITER
 %token TLABEL TLAMBDA TLET TLOCAL TMINUSMINUS TMODULE
 %token TNEW TNIL TNOINIT TON TOTHERWISE TOUT
@@ -1201,7 +1201,6 @@ opt_formal_type:
                             { $$ = NULL; }
 | TCOLON type_level_expr    { $$ = $2; }
 | TCOLON query_expr         { $$ = $2; }
-//| TCOLON TDOMAIN            { $$ = new UnresolvedSymExpr("_domain"); }
 | TCOLON TSINGLE            { $$ = new UnresolvedSymExpr( "_singlevar"); }
 | TCOLON TSYNC              { $$ = new UnresolvedSymExpr( "_syncvar"); }
 | TCOLON formal_array_type  { $$ = $2; }
@@ -1266,8 +1265,6 @@ type_level_expr:
     { $$ = new CallExpr( "_singlevar", $2); }
 | TINDEX TLP opt_actual_ls TRP
     { $$ = new CallExpr("chpl__buildIndexType", $3); }
-//| TDOMAIN TLP opt_actual_ls TRP
-//    { $$ = new CallExpr("chpl__buildDomainRuntimeType", new UnresolvedSymExpr("defaultDist"), $3); }
 | TSUBDOMAIN TLP opt_actual_ls TRP
     { $$ = new CallExpr("chpl__buildSubDomainType", $3); }
 | TSPARSE TSUBDOMAIN TLP opt_actual_ls TRP
@@ -1464,7 +1461,6 @@ call_expr:
 dot_expr:
   expr TDOT ident    { $$ = buildDotExpr($1, $3); }
 | expr TDOT TTYPE    { $$ = new CallExpr(PRIM_TYPEOF, $1); }
-| expr TDOT TDOMAIN  { $$ = buildDotExpr($1, "_dom"); }
 ;
 
 /* ( <expr> ) -- A parenthesized expression.  The parens are stripped.
