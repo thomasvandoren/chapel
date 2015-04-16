@@ -753,7 +753,7 @@ handleArrayTypeCase(FnSymbol* fn, Expr* indices, Expr* iteratorExpr, Expr* expr)
   arrayType->addFlag(FLAG_MAYBE_TYPE);
   BlockStmt* thenStmt = new BlockStmt();
   thenStmt->insertAtTail(new DefExpr(arrayType));
-  Symbol* domain = newTemp("_domain");
+  Symbol* domain = newTemp("domain");
   domain->addFlag(FLAG_EXPR_TEMP);
   thenStmt->insertAtTail(new DefExpr(domain));
   // note that we need the below autoCopy until we start reference
