@@ -116,7 +116,6 @@ continue         return processToken(yyscanner, TCONTINUE);
 delete           return processToken(yyscanner, TDELETE);
 dmapped          return processToken(yyscanner, TDMAPPED);
 do               return processToken(yyscanner, TDO);
-domain           return processToken(yyscanner, TDOMAIN);
 else             return processToken(yyscanner, TELSE);
 enum             return processToken(yyscanner, TENUM);
 export           return processToken(yyscanner, TEXPORT);

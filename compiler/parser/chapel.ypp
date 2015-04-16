@@ -1201,7 +1201,7 @@ opt_formal_type:
                             { $$ = NULL; }
 | TCOLON type_level_expr    { $$ = $2; }
 | TCOLON query_expr         { $$ = $2; }
-| TCOLON TDOMAIN            { $$ = new UnresolvedSymExpr("_domain"); }
+//| TCOLON TDOMAIN            { $$ = new UnresolvedSymExpr("_domain"); }
 | TCOLON TSINGLE            { $$ = new UnresolvedSymExpr( "_singlevar"); }
 | TCOLON TSYNC              { $$ = new UnresolvedSymExpr( "_syncvar"); }
 | TCOLON formal_array_type  { $$ = $2; }
@@ -1266,8 +1266,8 @@ type_level_expr:
     { $$ = new CallExpr( "_singlevar", $2); }
 | TINDEX TLP opt_actual_ls TRP
     { $$ = new CallExpr("chpl__buildIndexType", $3); }
-| TDOMAIN TLP opt_actual_ls TRP
-    { $$ = new CallExpr("chpl__buildDomainRuntimeType", new UnresolvedSymExpr("defaultDist"), $3); }
+//| TDOMAIN TLP opt_actual_ls TRP
+//    { $$ = new CallExpr("chpl__buildDomainRuntimeType", new UnresolvedSymExpr("defaultDist"), $3); }
 | TSUBDOMAIN TLP opt_actual_ls TRP
     { $$ = new CallExpr("chpl__buildSubDomainType", $3); }
 | TSPARSE TSUBDOMAIN TLP opt_actual_ls TRP
