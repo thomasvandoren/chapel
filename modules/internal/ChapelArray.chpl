@@ -128,16 +128,16 @@ module ChapelArray {
   
   proc _newDomain(value) {
     if _isPrivatized(value) then
-      return new _domain(_newPrivatizedClass(value), value);
+      return new domain(_newPrivatizedClass(value), value);
     else
-      return new _domain(value, value);
+      return new domain(value, value);
   }
   
   proc _getDomain(value) {
     if _isPrivatized(value) then
-      return new _domain(value.pid, value);
+      return new domain(value.pid, value);
     else
-      return new _domain(value, value);
+      return new domain(value, value);
   }
   
   proc _newDistribution(value) {
@@ -668,14 +668,14 @@ module ChapelArray {
     return ret;
   }
   */
-  
+
   //
   // Domain wrapper record
   //
   pragma "domain"
   pragma "has runtime type"
   pragma "ignore noinit"
-  record _domain {
+  record domain {
     var _value;     // stores domain class, may be privatized
     var _valueType; // stores type of privatized domains
     var _promotionType: index(rank, _value.idxType);
@@ -687,8 +687,19 @@ module ChapelArray {
         return _value;
       }
     }
-  
-    proc ~_domain () {
+
+    /*
+    pragma "generic constructor wrapper"
+    proc domain(d: _distribution, param rank: int, type idxType = int, param stridable: bool = false) {
+      var value = d.newRectangularDom(rank, idxType, stridable);
+      if _isPrivatized(value) then
+        domain(_newPrivatizedClass(value), value);
+      else
+        domain(value, value);
+    }
+    */
+
+    proc ~domain () {
      if !noRefCount {
       if !_isPrivatized(_valueType) {
         on _value {
@@ -1108,7 +1119,7 @@ module ChapelArray {
     }
   
     proc displayRepresentation() { _value.dsiDisplayRepresentation(); }
-  }  // record _domain
+  }  // record domain
   
   proc chpl_countDomHelp(dom, counts) {
     var ranges = dom.dims();
@@ -1805,7 +1816,7 @@ module ChapelArray {
   proc isDmapValue(e)                param  return false;
 
   proc isDomainType(type t) param {
-    proc isDomainHelp(type t: _domain) param  return true;
+    proc isDomainHelp(type t: domain) param  return true;
     proc isDomainHelp(type t)          param  return false;
     return isDomainHelp(t);
   }
