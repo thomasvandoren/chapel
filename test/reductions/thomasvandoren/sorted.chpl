@@ -25,6 +25,8 @@ class isSorted : ReduceScanOp {
   proc combine(state: isSorted(eltType)) {
     // If this instance has not seen the first value, just copy all values from
     // state to this instance.
+
+    // FIXME: What happens when state._accumulatedFirst is false? What if both this and state have not seen any values? (thomasvandoren, 2015-10-12)
     if _accumulatedFirst.compareExchange(false, true) {
       first = state.first;
       last = state.last;
