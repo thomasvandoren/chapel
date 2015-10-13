@@ -23,11 +23,29 @@ class isSorted : ReduceScanOp {
   }
 
   proc combine(state: isSorted(eltType)) {
+    writeln("me: ", this, " other: ", state);
     status = status && state.status && last <= state.first;
     last = state.last;
   }
 
   proc generate() {
     return status;
+  }
+
+  proc writeThis(f: Writer) {
+    f <~> "isSorted(";
+    f <~> "eltType=";
+    f <~> typeToString(eltType);
+    f <~> ", communicative=";
+    f <~> communicative;
+    f <~> ", status=";
+    f <~> status;
+    f <~> ", first=";
+    f <~> first;
+    f <~> ", last=";
+    f <~> last;
+    f <~> ", _accumulatedFirst=";
+    f <~> _accumulatedFirst.read();
+    f <~> ")";
   }
 }
