@@ -9,20 +9,20 @@ class isSorted : ReduceScanOp {
   var status = true;
   var first, last: eltType;
 
-  var _accumulatedFirst = false;
+  var _accumulatedFirst: atomic bool;
 
   proc accumulate(value: eltType) {
-    if !_accumulatedFirst {
+    if _accumulatedFirst.compareExchange(false, true) {
       first = value;
       last = value;
-      _accumulatedFirst = true;
+    } else {
+      if last > value then
+        status = false;
+      last = value;
     }
-    if last > value then
-      status = false;
-    last = value;
   }
 
-  proc combine(state: sorted(eltType)) {
+  proc combine(state: isSorted(eltType)) {
     status = status && state.status && last <= state.first;
     last = state.last;
   }
