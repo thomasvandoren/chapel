@@ -23,9 +23,17 @@ class isSorted : ReduceScanOp {
   }
 
   proc combine(state: isSorted(eltType)) {
-    writeln("me: ", this, " other: ", state);
-    status = status && state.status && last <= state.first;
-    last = state.last;
+    // If this instance has not seen the first value, just copy all values from
+    // state to this instance.
+    if _accumulatedFirst.compareExchange(false, true) {
+      first = state.first;
+      last = state.last;
+      status = state.status;
+    } else {
+      writeln("me: ", this, " other: ", state);
+      status = status && state.status && last <= state.first;
+      last = state.last;
+    }
   }
 
   proc generate() {
