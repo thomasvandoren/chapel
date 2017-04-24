@@ -1,0 +1,7 @@
+FROM chapel/chapel:1.15.0-amazonlinux
+
+ENV CHPL_COMM gasnet
+ENV GASNET_SPAWNFN S
+
+RUN make -C $CHPL_HOME \
+    && make -C $CHPL_HOME chpldoc
