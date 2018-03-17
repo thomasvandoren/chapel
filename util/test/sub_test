@@ -613,8 +613,7 @@ utildir = os.path.realpath(utildir)
 p = Popen([os.path.join(chpl_home,'util','config','compileline'),
                         '--compile'],
           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-c_compiler = p.communicate()[0]
-c_compiler = c_compiler.rstrip()
+c_compiler = p.communicate()[0].rstrip()
 if p.returncode != 0:
   Fatal('Cannot find c compiler')
 
@@ -1563,8 +1562,7 @@ for testname in testsrc:
                            ' '.join(args)],
                           stdout=subprocess.PIPE,
                           stderr=subprocess.STDOUT)
-                out = p.communicate()[0]
-                sys.stdout.write(out)
+                sys.stdout.write(p.communicate()[0])
                 sys.stdout.flush()
 
             if globalPrediff:
@@ -1576,8 +1574,7 @@ for testname in testsrc:
                            ' '.join(args)],
                           stdout=subprocess.PIPE,
                           stderr=subprocess.STDOUT)
-                out = p.communicate()[0]
-                sys.stdout.write(out)
+                sys.stdout.write(p.communicate()[0])
                 sys.stdout.flush()
 
             if prediff:
@@ -1589,8 +1586,7 @@ for testname in testsrc:
                            ' '.join(args)],
                           stdout=subprocess.PIPE,
                           stderr=subprocess.STDOUT)
-                out = p.communicate()[0]
-                sys.stdout.write(out)
+                sys.stdout.write(p.communicate()[0])
                 sys.stdout.flush()
 
 
@@ -2055,10 +2051,9 @@ for testname in testsrc:
                     sys.stdout.write('[Concatenating extra files: %s]\n'%
                                     (test_filename+'.catfiles'))
                     sys.stdout.flush()
-                    catfilesOutputBytes = Popen(['cat']+catfiles.split(),
-                                                stdout=subprocess.PIPE,
-                                                stderr=subprocess.STDOUT).communicate()[0]
-                    output+=catfilesOutputBytes
+                    output+=Popen(['cat']+catfiles.split(),
+                                  stdout=subprocess.PIPE,
+                                  stderr=subprocess.STDOUT).communicate()[0]
 
                 # Sadly the scripts used below require an actual file
                 with open(execlog, 'w') as execlogfile:
@@ -2069,38 +2064,35 @@ for testname in testsrc:
                     if systemPrediff:
                         sys.stdout.write('[Executing system-wide prediff]\n')
                         sys.stdout.flush()
-                        systemPrediffBytes = Popen([systemPrediff,
-                                                    execname,execlog,compiler,
-                                                    ' '.join(envCompopts)+
-                                                    ' '+compopts,
-                                                    ' '.join(args)],
-                                                   stdout=subprocess.PIPE,
-                                                   stderr=subprocess.STDOUT).communicate()[0]
-                        sys.stdout.write(systemPrediffBytes)
+                        sys.stdout.write(Popen([systemPrediff,
+                                                execname,execlog,compiler,
+                                                ' '.join(envCompopts)+
+                                                ' '+compopts,
+                                                ' '.join(args)],
+                                               stdout=subprocess.PIPE,
+                                               stderr=subprocess.STDOUT).communicate()[0])
 
                     if globalPrediff:
                         sys.stdout.write('[Executing ./PREDIFF]\n')
                         sys.stdout.flush()
-                        globalPrediffBytes = Popen(['./PREDIFF',
-                                                    execname,execlog,compiler,
-                                                    ' '.join(envCompopts)+
-                                                    ' '+compopts,
-                                                    ' '.join(args)],
-                                                   stdout=subprocess.PIPE,
-                                                   stderr=subprocess.STDOUT).communicate()[0]
-                        sys.stdout.write(globalPrediffBytes)
+                        sys.stdout.write(Popen(['./PREDIFF',
+                                                execname,execlog,compiler,
+                                                ' '.join(envCompopts)+
+                                                ' '+compopts,
+                                                ' '.join(args)],
+                                               stdout=subprocess.PIPE,
+                                               stderr=subprocess.STDOUT).communicate()[0])
 
                     if prediff:
                         sys.stdout.write('[Executing prediff ./%s]\n'%(prediff))
                         sys.stdout.flush()
-                        prediffBytes = Popen(['./'+prediff,
-                                              execname,execlog,compiler,
-                                              ' '.join(envCompopts)+
-                                              ' '+compopts,
-                                              ' '.join(args)],
-                                             stdout=subprocess.PIPE,
-                                             stderr=subprocess.STDOUT).communicate()[0]
-                        sys.stdout.write(prediffBytes)
+                        sys.stdout.write(Popen(['./'+prediff,
+                                                execname,execlog,compiler,
+                                                ' '.join(envCompopts)+
+                                                ' '+compopts,
+                                                ' '.join(args)],
+                                               stdout=subprocess.PIPE,
+                                               stderr=subprocess.STDOUT).communicate()[0])
 
                     if not perftest:
                         # find the good file 
