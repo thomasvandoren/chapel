@@ -14,7 +14,7 @@ fh.close()
 def writeOutput( value ):
   fh = open(outfile, 'w')
   fh.write(value+'\n')
-  if DEBUG_MODE: print value 
+  if DEBUG_MODE: print(value)
   fh.close()
 
 [test_serial_input, test_parallel_input] = input.split( "PARALLELISM START" )
